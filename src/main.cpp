@@ -1,46 +1,120 @@
-/* Pro Micro Test Code
-   by: Nathan Seidle
-   modified by: Jim Lindblom
-   SparkFun Electronics
-   date: September 16, 2013
-   license: Public Domain - please use this code however you'd like.
-   It's provided as a learning tool.
-
-   This code is provided to show how to control the SparkFun
-   ProMicro's TX and RX LEDs within a sketch. It also serves
-   to explain the difference between Serial.print() and
-   Serial1.print().
-*/
+#include <SFE_BMP180.h>
+#include <Wire.h>
 #include <Arduino.h>
+#include <SPI.h>
 
-int RXLED = 17;  // The RX LED has a defined Arduino pin
-// Note: The TX LED was not so lucky, we'll need to use pre-defined
-// macros (TXLED1, TXLED0) to control that.
-// (We could use the same macros for the RX LED too -- RXLED1,
-//  and RXLED0.)
+
+SFE_BMP180 pressure;
+
+double baseline; // baseline pressure
+
+double getPressure()
+{
+  char status;
+  double T,P,p0,a;
+
+  // You must first get a temperature measurement to perform a pressure reading.
+  
+  // Start a temperature measurement:
+  // If request is successful, the number of ms to wait is returned.
+  // If request is unsuccessful, 0 is returned.
+
+  status = pressure.startTemperature();
+  if (status != 0)
+  {
+    // Wait for the measurement to complete:
+
+    delay(status);
+
+    // Retrieve the completed temperature measurement:
+    // Note that the measurement is stored in the variable T.
+    // Use '&T' to provide the address of T to the function.
+    // Function returns 1 if successful, 0 if failure.
+
+    status = pressure.getTemperature(T);
+    if (status != 0)
+    {
+      // Start a pressure measurement:
+      // The parameter is the oversampling setting, from 0 to 3 (highest res, longest wait).
+      // If request is successful, the number of ms to wait is returned.
+      // If request is unsuccessful, 0 is returned.
+
+      status = pressure.startPressure(3);
+      if (status != 0)
+      {
+        // Wait for the measurement to complete:
+        delay(status);
+
+        // Retrieve the completed pressure measurement:
+        // Note that the measurement is stored in the variable P.
+        // Use '&P' to provide the address of P.
+        // Note also that the function requires the previous temperature measurement (T).
+        // (If temperature is stable, you can do one temperature measurement for a number of pressure measurements.)
+        // Function returns 1 if successful, 0 if failure.
+
+        status = pressure.getPressure(P,T);
+        if (status != 0)
+        {
+          return(P);
+        }
+        else Serial.println("error retrieving pressure measurement\n");
+      }
+      else Serial.println("error starting pressure measurement\n");
+    }
+    else Serial.println("error retrieving temperature measurement\n");
+  }
+  else Serial.println("error starting temperature measurement\n");
+}
 
 void setup()
 {
-  pinMode(RXLED, OUTPUT);  // Set RX LED as an output
-  // TX LED is set as an output behind the scenes
+  Serial.begin(9600);
+  Serial.println("REBOOT");
 
-  Serial.begin(9600); //This pipes to the serial monitor
-  Serial.println("Initialize Serial Monitor");
+  // Initialize the sensor (it is important to get calibration values stored on the device).
 
-  Serial1.begin(9600); //This is the UART, pipes to sensors attached to board
-  Serial1.println("Initialize Serial Hardware UART Pins");
+  if (pressure.begin())
+    Serial.println("BMP180 init success");
+  else
+  {
+    // Oops, something went wrong, this is usually a connection problem,
+    // see the comments at the top of this sketch for the proper connections.
+
+    Serial.println("BMP180 init fail (disconnected?)\n\n");
+    while(1); // Pause forever.
+  }
+
+  // Get the baseline pressure:
+  
+  delay(2000);
+
+  baseline = getPressure();
+  
+  Serial.print("baseline pressure: ");
+  Serial.print(baseline);
+  Serial.println(" mb");  
 }
 
 void loop()
 {
-  Serial.println("Hello world!");  // Print "Hello World" to the Serial Monitor
-  Serial1.println("Hello! Can anybody hear me?");  // Print "Hello!" over hardware UART
+  double a,P;
+  
+  // Get a new pressure reading:
 
-  digitalWrite(RXLED, LOW);   // set the RX LED ON
-  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
-  delay(1000);              // wait for a second
+  P = getPressure();
 
-  digitalWrite(RXLED, HIGH);    // set the RX LED OFF
-  TXLED1; //TX LED macro to turn LED ON
-  delay(1000);              // wait for a second
+  // Show the relative altitude difference between
+  // the new reading and the baseline reading:
+
+  a = pressure.altitude(P,baseline);
+  
+  //Serial.print("relative altitude: ");
+  //if (a >= 0.0) Serial.print(" "); // add a space for positive numbers
+  Serial.println(a,2);
+  //Serial.print(" meters, ");
+  //if (a >= 0.0) Serial.print(" "); // add a space for positive numbers
+  //Serial.print(a*3.28084,0);
+  //Serial.println(" feet");
+  
+  delay(50);
 }
