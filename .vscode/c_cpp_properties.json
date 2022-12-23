@@ -1,0 +1,64 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/include",
+                "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/src",
+                "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/.pio/libdeps/sparkfun_promicro16/Sparkfun BMP180/src",
+                "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/.pio/libdeps/sparkfun_promicro16/SPIMemory/src",
+                "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/variants/sparkfun_promicro",
+                "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/include",
+                    "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/src",
+                    "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/.pio/libdeps/sparkfun_promicro16/Sparkfun BMP180/src",
+                    "/Users/lukeadelman/GitHub Repositories/Barametric-Flight-Computer/Hackathon-2022/.pio/libdeps/sparkfun_promicro16/SPIMemory/src",
+                    "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/variants/sparkfun_promicro",
+                    "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/Users/lukeadelman/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60105",
+                "ARDUINO_AVR_PROMICRO16",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "USB_VID=0x1B4F",
+                "USB_PID=0x9206",
+                "USB_PRODUCT=\"SparkFun Pro Micro\"",
+                "USB_MANUFACTURER=\"SparkFun\"",
+                "__AVR_ATmega32U4__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/Users/lukeadelman/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega32u4",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
